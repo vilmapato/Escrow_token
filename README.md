@@ -23,4 +23,3 @@ This creates the escrow PDA, its token account, and transfers tokens from the in
 ```bash
 anchor build
 anchor deploy 
-anchor test
