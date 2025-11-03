@@ -10,7 +10,7 @@ This project demonstrates how to send **PATS tokens** (Token-2022) into an escro
 |------------|----------|-------------|
 | **PATS Mint (Token-2022)** | `jBhgEBgg6uxxWnRzpw18p35Z1n48U9LAuW4z2USDUn6` | Custom SPL Token created in Task 2.1 |
 | **Vault PDA** | `AajyzPcxuS9R5SvyJB1zEwxJqRkuVLp663THFBZAcVEa` | Holds locked tokens in Task 2.2 |
-| **Escrow PDA** | *(to be generated on deploy)* | Temporary program-owned account |
+| **Deployed tx** | 6rELc5eCUTK4dFY9EETHgSPNs4RMFaMye16U31eFpPtSGUXQ6zANa8B4Aw79Fsy3fcoitBiTrtxxgVQQ8YvT1P9 | Temporary program-owned account |
 | **Token Program** | `TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb` | SPL Token-2022 Program |
 | **Network** | Devnet | |
 
@@ -22,5 +22,5 @@ This creates the escrow PDA, its token account, and transfers tokens from the in
 
 ```bash
 anchor build
-anchor deploy --provider.cluster devnet
-anchor test --provider.cluster devnet
+anchor deploy 
+anchor test
