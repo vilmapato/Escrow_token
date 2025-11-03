@@ -9,3 +9,7 @@ pub struct EscrowAccount {
     pub is_released: bool,
     pub bump: u8,
 }
+
+impl EscrowAccount {
+    pub const INIT_SPACE: usize = 32 + 32 + 32 + 8 + 1 + 1;
+}

@@ -1,5 +1,7 @@
 use anchor_lang::prelude::*;
-use anchor_spl::token_2022::{self, Token2022, TokenAccount, Mint, TransferChecked, transfer_checked};
+use anchor_spl::token_2022::{Token2022, TransferChecked, transfer_checked};
+use anchor_spl::token_interface::{Mint, TokenAccount};
+use anchor_lang::prelude::InterfaceAccount;
 use crate::state::EscrowAccount;
 
 #[derive(Accounts)]
@@ -7,13 +9,13 @@ pub struct InitializeEscrow<'info> {
     #[account(mut)]
     pub initializer: Signer<'info>,
 
-    /// CHECK: recipient can be any wallet
+    /// CHECK: Recipient can be any wallet
     pub recipient: AccountInfo<'info>,
 
     #[account(mut)]
-    pub initializer_ata: Account<'info, TokenAccount>,
+    pub initializer_ata: InterfaceAccount<'info, TokenAccount>,
 
-    pub mint: Account<'info, Mint>,
+    pub mint: InterfaceAccount<'info, Mint>,
 
     #[account(
         init,
@@ -30,7 +32,7 @@ pub struct InitializeEscrow<'info> {
         token::mint = mint,
         token::authority = escrow_account,
     )]
-    pub escrow_token_account: Account<'info, TokenAccount>,
+    pub escrow_token_account: InterfaceAccount<'info, TokenAccount>,
 
     pub token_program: Program<'info, Token2022>,
     pub system_program: Program<'info, System>,
@@ -44,9 +46,9 @@ pub fn initialize_escrow(ctx: Context<InitializeEscrow>, amount: u64) -> Result<
     escrow.mint = ctx.accounts.mint.key();
     escrow.amount = amount;
     escrow.is_released = false;
-    escrow.bump = *ctx.bumps.get("escrow_account").unwrap();
+    escrow.bump = ctx.bumps.escrow_account;
 
-    // Transfer tokens from initializer → escrow PDA ATA
+    // Transfer tokens from initializer → escrow PDA’s ATA
     let cpi_accounts = TransferChecked {
         from: ctx.accounts.initializer_ata.to_account_info(),
         mint: ctx.accounts.mint.to_account_info(),
